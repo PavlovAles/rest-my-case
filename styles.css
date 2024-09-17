@@ -1,0 +1,18 @@
+.stock-amount {
+  color: green;
+}
+
+.stock-amount_low {
+  color: red;
+}
+
+.stock-amount_low::after {
+  content: '';
+  margin-left: 4px;
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  background-color: red;
+  transform: rotate(180deg);
+  mask-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%229%22%20viewBox%3D%220%200%2010%209%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.83203%200.597656L9.53125%209H0.132812L4.83203%200.597656Z%22%20fill%3D%22%23000%22%2F%3E%0A%3C%2Fsvg%3E%0A);
+}
