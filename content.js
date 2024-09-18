@@ -4,12 +4,10 @@ function checkIsLoading() {
 }
 
 async function fetchStockData(apiUrl, id) {
-  // const apiUrl = `${apiUrl}/${id}`;
-  apiUrl =
-    'https://www.random.org/integers/?num=1&min=1&max=666&col=1&base=10&format=plain&rnd=new';
+  const url = `${apiUrl}${id}`;
 
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(url);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -18,6 +16,7 @@ async function fetchStockData(apiUrl, id) {
 }
 
 function showRest(productElement, amount, threshold) {
+  if (!parseInt(amount)) return;
   const responseElement = document.createElement('div');
   responseElement.textContent = `На складе: ${amount}`;
   responseElement.classList.add('stock-amount');
