@@ -27,7 +27,16 @@ function showRest(productElement, amount, threshold) {
   productElement.parentNode.insertBefore(responseElement, productElement.nextSibling);
 }
 
-function fetchAndShowStockInfo() {
+async function fetchAndShowStockInfo(data, productElement) {
+  const productId = productElement.textContent;
+  if (!data.stockApiUrl || !productId) {
+    return;
+  }
+  const restAmount = await fetchStockData(data.stockApiUrl, productId);
+  showRest(productElement, restAmount, data.threshold);
+}
+
+function runExtension() {
   let checkInterval;
   let elapsedTime = 0;
   const maxTime = 5000;
@@ -37,20 +46,14 @@ function fetchAndShowStockInfo() {
       return;
     }
 
-    const productElement = document.querySelector('span#productNmId');
+    const productIdElement = document.querySelector('span#productNmId');
     elapsedTime += 100;
 
-    if (productElement) {
+    if (productIdElement) {
       clearInterval(checkInterval);
-
-      const productId = productElement.textContent;
-      chrome.storage.sync.get(['stockApiUrl', 'threshold'], async (data) => {
-        if (!data.stockApiUrl) {
-          return;
-        }
-        const restAmount = await fetchStockData(data.stockApiUrl, productId);
-        showRest(productElement, restAmount, data.threshold);
-      });
+      chrome.storage.sync.get(['stockApiUrl', 'threshold'], (data) =>
+        fetchAndShowStockInfo(data, productIdElement)
+      );
     } else if (elapsedTime >= maxTime) {
       clearInterval(checkInterval);
       console.log('Products id element did not appear within 5 seconds.');
@@ -58,4 +61,4 @@ function fetchAndShowStockInfo() {
   }, 100);
 }
 
-window.addEventListener('load', fetchAndShowStockInfo);
+window.addEventListener('load', runExtension);
