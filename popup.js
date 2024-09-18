@@ -4,7 +4,7 @@ const saveButton = document.getElementById('save');
 
 saveButton.addEventListener('click', () => {
   const stockApiUrl = stockApiUrlInput?.value;
-  const threshold = parseInt(thresholdInput?.value) || Infinity;
+  const threshold = parseInt(thresholdInput?.value) || 0;
   chrome.storage.sync.set({ stockApiUrl, threshold }, () => {
     saveButton.textContent = 'Saved successfully!';
     setTimeout(() => {
